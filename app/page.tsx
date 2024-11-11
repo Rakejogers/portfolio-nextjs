@@ -19,9 +19,9 @@ interface Project {
 const projects: Project[] = [
   {
     title: "Scholar Seats",
-    description: "Developed a secure, user-friendly student ticket marketplace app with features like student verification, ticket listing, filtering, and a trust-based rating system, emphasizing zero-cost access.",
+    description: "Developed a secure, user-friendly student ticket marketplace app with features like student verification, ticket listing, chat system, and a trust-based rating system, emphasizing zero-cost access.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "SQLite"],
-    github: "https://github.com/rakejogers/studnet-ticket-marketplace",
+    github: "https://github.com/rakejogers/student-ticket-app",
     demo: "https://scholarseats.com",
     image:"/images/scholarseats.png",
   },
