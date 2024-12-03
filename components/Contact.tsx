@@ -1,12 +1,15 @@
 'use client'
 
+import React from 'react'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Send, Github, Linkedin, Mail } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
 
 const Contact = () => {
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,16 +21,59 @@ const Contact = () => {
     threshold: 0.1,
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Here you would typically send the form data to a server
-    console.log('Form submitted:', formData)
-    // Reset form after submission
-    setFormData({ name: '', email: '', message: '' })
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    fetch("https://formcarry.com/s/UY-qbKyQix", {
+      method: 'POST',
+      headers: { 
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(response => {
+      if (response.code === 200) {
+        toast({
+          title: "Success!",
+          description: "Thank you for your message. I'll get back to you soon!",
+          variant: "default",
+        })
+        // Reset form after successful submission
+        setFormData({ name: '', email: '', message: '' })
+      }
+      else if(response.code === 422){
+        // Field validation failed
+        toast({
+          title: "Validation Error",
+          description: response.message,
+          variant: "destructive",
+        })
+      }
+      else {
+        // other error from formcarry
+        toast({
+          title: "Error",
+          description: response.message,
+          variant: "destructive",
+        })
+      }
+    })
+    .catch(error => {
+      // request related error.
+      toast({
+        title: "Error",
+        description: error.message ? error.message : "Something went wrong. Please try again.",
+        variant: "destructive",
+      })
+      console.error('Error:', error);
+    });
   }
 
   return (

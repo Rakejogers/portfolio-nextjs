@@ -19,7 +19,7 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
         transition={{ duration: 0.5 }}
         className="max-w-3xl"
       >
-        <Badge variant="secondary" className="mb-4">
+        <Badge variant="secondary" className="mb-4 text-green-500">
           <Terminal className="w-3 h-3 mr-1" /> Available for hire
         </Badge>
         <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary from-0% via-blue-600 via-50% to-primary to-100% text-transparent bg-clip-text leading-[1.2] md:leading-[1.2] animate-gradient bg-[length:200%_auto]">

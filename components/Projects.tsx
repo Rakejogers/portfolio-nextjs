@@ -7,6 +7,14 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
+interface Project {
+  title: string
+  description: string
+  tech: string[]
+  demo?: string
+  github?: string
+}
+
 const projects = [
   {
     title: 'Scholar Seats',
@@ -50,7 +58,7 @@ const Projects = () => {
   )
 }
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
