@@ -136,21 +136,21 @@ const Contact = () => {
             </Button>
           </motion.form>
           <div className="text-center">
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground mb-6">
               Or reach out directly through these platforms:
             </p>
-            <div className="flex justify-center space-x-4">
-              <Button variant="outline" size="lg" asChild>
+            <div className="flex flex-col md:flex-row justify-center md:space-x-4 space-y-3 md:space-y-0 px-4">
+              <Button variant="outline" size="lg" className="w-full md:w-auto" asChild>
                 <a href="mailto:jarog2005@gmail.com">
                   <Mail className="w-4 h-4 mr-2" /> Email
                 </a>
               </Button>
-              <Button variant="outline" size="lg" asChild>
+              <Button variant="outline" size="lg" className="w-full md:w-auto" asChild>
                 <a href="https://github.com/rakejogers" target="_blank" rel="noopener noreferrer">
                   <Github className="w-4 h-4 mr-2" /> GitHub
                 </a>
               </Button>
-              <Button variant="outline" size="lg" asChild>
+              <Button variant="outline" size="lg" className="w-full md:w-auto" asChild>
                 <a href="https://linkedin.com/in/jake-rogers-engineer" target="_blank" rel="noopener noreferrer">
                   <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
                 </a>
