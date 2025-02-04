@@ -26,7 +26,7 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
           Hi, I&apos;m Jake Rogers
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-          A passionate full-stack developer and student at the University of Kentucky.
+          A passionate developer and student at the University of Kentucky.
         </p>
         <div className="flex gap-4">
           <Button size="lg" onClick={scrollToProjects}>
