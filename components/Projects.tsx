@@ -18,7 +18,7 @@ interface Project {
 const projects = [
   {
     title: 'Scholar Seats',
-    description: 'A student-focused ticket exchange platform with secure authentication and ticket filtering. Build for real users at my university.',
+    description: 'A student-focused ticket exchange platform to facilitate communication between buyers and sellers of tickets for events at my university. Released and used by 60+ users at my university.',
     tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
     demo: 'https://scholarseats.com',
     github: 'https://github.com/rakejogers/scholar-seats',
