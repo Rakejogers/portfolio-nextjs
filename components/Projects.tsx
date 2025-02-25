@@ -21,7 +21,7 @@ const projects = [
     description: 'A student-focused ticket exchange platform to facilitate communication between buyers and sellers of tickets for events at my university. Released and used by 60+ users at my university.',
     tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
     demo: 'https://scholarseats.com',
-    github: 'https://github.com/rakejogers/scholar-seats',
+    github: 'https://github.com/rakejogers/student-ticket-app',
   },
   {
     title: 'Snake Game Neural Network',
