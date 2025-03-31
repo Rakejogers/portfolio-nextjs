@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { motion, useInView, useMotionTemplate, useMotionValue } from 'framer-motion'
-import { ExternalLink, Github, ArrowRight } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { motion, useInView, useMotionTemplate, useMotionValue, AnimatePresence } from 'framer-motion'
+import { ExternalLink, Github } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import PocketBase from 'pocketbase';
 
 interface Project {
   title: string
@@ -12,200 +13,222 @@ interface Project {
   tech: string[]
   demo?: string
   github?: string
+  longDescription?: string
 }
 
-const projects = [
-  {
-    title: 'Scholar Seats',
-    description: 'A student-focused ticket exchange platform to facilitate communication between buyers and sellers of tickets for events at my university. Released and used by 75+ users at my university.',
-    tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
-    demo: 'https://scholarseats.com',
-    github: 'https://github.com/rakejogers/student-ticket-app',
-  },
-  {
-    title: 'Snake Game Neural Network',
-    description: 'An AI agent that learns to play Snake using deep reinforcement learning.',
-    tech: ['Python', 'PyTorch'],
-    github: 'https://github.com/rakejogers/snake_game_ai',
-  },
-  {
-    title: 'Video Sharing Mobile App (AORA)',
-    description: 'A mobile application for sharing AI-generated videos using React Native and Appwrite Database.',
-    tech: ['React Native', 'Expo', 'JavaScript'],
-    github: 'https://github.com/rakejogers/jsMastery-Aora',
-  },
-  {
-    title: 'Portfolio Website',
-    description: 'My portfolio website built with Next.js and Tailwind CSS. Features a dark mode toggle and smooth scrolling.',
-    tech: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Vercel'],
-    github: 'https://github.com/Rakejogers/portfolio-nextjs',
-  },
-]
+const pb = new PocketBase('https://pocketbase.scholarseats.com');
 
 const Projects = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [selectedProject, setSelectedProject] = useState<number | null>(null)
+  const projectRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [userCount, setUserCount] = useState<number>(0);
   
-  return (
-    <section ref={ref} id="projects" className="py-24">
-      <motion.div 
-        className="container mx-auto px-4"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="mb-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Badge variant="outline" className="mb-4 px-4 py-1 text-sm border-primary/30 text-primary">
-              My Work
-            </Badge>
-          </motion.div>
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Featured Projects
-          </motion.h2>
-          <motion.p 
-            className="text-muted-foreground max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            A showcase of my recent work, featuring web applications, machine learning models, and mobile development
-          </motion.p>
-        </div>
-        
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
-          ))}
-        </div>
-        
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 text-center"
-        >
-          <Button variant="outline" asChild>
-            <a href="https://github.com/Rakejogers" target="_blank" rel="noopener noreferrer" className="group">
-              View More Projects on GitHub
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-          </Button>
-        </motion.div>
-      </motion.div>
-    </section>
-  )
-}
+  const scrollToProject = (index: number) => {
+    projectRefs.current[index]?.scrollIntoView({ behavior: "smooth" })
+    setSelectedProject(index)
+  }
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
-  const [isHovered, setIsHovered] = useState(false);
-  
-  // Mouse position for lighting effect
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-  
-  const backgroundGlow = useMotionTemplate`
-    radial-gradient(
-      350px circle at ${mouseX}px ${mouseY}px,
-      var(--spotlight-color) 0%,
-      transparent 80%
-    )
-  `;
-  
+  // Fetch scholar seats user count from Pocketbase
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const record = await pb.collection('num_users').getOne('1');
+        setUserCount(Math.round(record.totalUsers / 5) * 5);
+      } catch (error) {
+        console.error('Error fetching user count:', error);
+      }
+    };
+    fetchUserCount();
+  }, []);
+
+  const projects = [
+    {
+      title: 'Scholar Seats',
+      description: 'A student-focused ticket exchange platform',
+      longDescription: `A student-focused ticket exchange platform to facilitate communication between buyers and sellers of tickets for events at my university. Released and used by ${userCount}+ users at my university.`,
+      tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
+      demo: 'https://scholarseats.com',
+      github: 'https://github.com/rakejogers/student-ticket-app',
+      image: '/project1.gif',
+    },
+    {
+      title: 'Snake Game Neural Network',
+      description: 'AI agent learning through reinforcement',
+      longDescription: 'An AI agent that learns to play Snake using deep reinforcement learning.',
+      tech: ['Python', 'PyTorch'],
+      github: 'https://github.com/rakejogers/snake_game_ai',
+      image: '/project2.gif',
+    },
+    {
+      title: 'Video Sharing Mobile App',
+      description: 'Mobile app for AI-generated videos',
+      longDescription: 'A mobile application for sharing AI-generated videos using React Native and Appwrite Database.',
+      tech: ['React Native', 'Expo', 'JavaScript'],
+      github: 'https://github.com/rakejogers/jsMastery-Aora',
+      image: '/project3.gif',
+    },
+    {
+      title: 'Portfolio Website',
+      description: 'Modern portfolio with Next.js',
+      longDescription: 'My portfolio website built with Next.js and Tailwind CSS. Features a dark mode toggle and smooth scrolling.',
+      tech: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Vercel'],
+      github: 'https://github.com/Rakejogers/portfolio-nextjs',
+      image: '/project4.gif',
+    },
+  ]
+
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="group relative h-full rounded-xl p-px"
-      style={{
-        '--spotlight-color': 'rgba(var(--primary-rgb), 0.08)'
-      } as any}
-    >
-      <div
-        className="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          backgroundImage: backgroundGlow as any,
-        }}
-      />
-      
-      <div className="relative h-full rounded-xl border border-border bg-card/30 backdrop-blur-sm transition-all duration-300 group-hover:shadow-md">
-        <div className="p-6 flex flex-col h-full">
-          <motion.h3 
-            className="text-2xl font-semibold mb-3 tracking-tight flex items-center"
-            animate={isHovered ? { x: 8 } : { x: 0 }}
-            transition={{ duration: 0.3 }}
+    <div className="min-h-screen bg-transparent text-foreground">
+      {/* Projects List View */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="min-h-screen relative overflow-hidden bg-transparent"
+      >
+        {/* Mobile Projects Header */}
+        <div className="md:hidden text-center py-8">
+          <motion.h1 
+            className="text-4xl font-bold mb-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            {project.title}
-            <motion.div 
-              initial={{ width: 0 }}
-              animate={isHovered ? { width: 'auto' } : { width: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden ml-2"
+            My Projects
+          </motion.h1>
+        </div>
+
+        <motion.div 
+          className="absolute right-0 top-0 bottom-0 w-full md:w-[55%] flex items-center justify-end"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="w-full h-full flex items-center justify-center">
+            <img 
+              src="/projects-list.gif" 
+              alt="Projects" 
+              className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block" 
+            />
+          </div>
+        </motion.div>
+        
+        <div className="absolute left-0 top-0 bottom-0 w-full md:w-[45%] flex items-center">
+          <div className="px-4 md:px-12 w-full">
+            <motion.h1 
+              className="text-4xl md:text-6xl font-bold mb-8 md:mb-16 hidden md:block"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              <ArrowRight className="h-4 w-4 text-primary" />
-            </motion.div>
-          </motion.h3>
-          
-          <p className="text-muted-foreground mb-6 flex-grow">
-            {project.description}
-          </p>
-          
-          <div className="mt-auto space-y-4">
-            <div className="flex flex-wrap gap-2">
-              {project.tech.map((tech) => (
-                <Badge key={tech} variant="secondary" className="text-xs px-2 py-0.5">
-                  {tech}
-                </Badge>
+              My Projects
+            </motion.h1>
+            <div className="space-y-4 md:space-y-8 w-full">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  className="cursor-pointer group w-full"
+                  onClick={() => scrollToProject(index)}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  whileHover={{ x: 20 }}
+                >
+                  <h2 className="text-2xl md:text-4xl font-light mb-1 md:mb-2">{project.title}</h2>
+                  <p className="text-sm md:text-base text-muted-foreground">{project.description}</p>
+                </motion.div>
               ))}
-            </div>
-            
-            <div className="flex gap-3">
-              {project.github && (
-                <Button variant="outline" size="sm" asChild className="group/btn">
-                  <a href={project.github} target="_blank" rel="noopener noreferrer">
-                    <Github className="w-4 h-4 mr-2 transition-transform group-hover/btn:scale-110" /> 
-                    Code
-                  </a>
-                </Button>
-              )}
-              {project.demo && (
-                <Button size="sm" asChild className="group/btn">
-                  <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="w-4 h-4 mr-2 transition-transform group-hover/btn:scale-110" /> 
-                    Demo
-                  </a>
-                </Button>
-              )}
             </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+
+      {/* Individual Project Sections */}
+      {projects.map((project, index) => (
+        <motion.div
+          key={project.title}
+          ref={el => projectRefs.current[index] = el}
+          className="min-h-screen flex items-center justify-center relative overflow-hidden py-8 md:py-0"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-20%" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 }
+          }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-20 items-center">
+              <motion.div 
+                className="space-y-6 md:space-y-8 order-2 md:order-1"
+                variants={{
+                  hidden: { opacity: 0, x: -50 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <h2 className="text-4xl md:text-6xl font-bold">{project.title}</h2>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">{project.longDescription}</p>
+                <motion.div 
+                  className="flex flex-wrap gap-2 md:gap-3"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
+                  transition={{ duration: 0.4, delay: 0.4 }}
+                >
+                  {project.tech.map((tech) => (
+                    <Badge key={tech} variant="secondary" className="text-xs md:text-sm px-2 md:px-3 py-1">
+                      {tech}
+                    </Badge>
+                  ))}
+                </motion.div>
+                <motion.div 
+                  className="flex flex-wrap gap-4"
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                >
+                  {project.github && (
+                    <Button variant="outline" size="sm" className="w-full md:w-auto md:text-base md:h-10" asChild>
+                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="w-4 h-4 mr-2" /> 
+                        View Code
+                      </a>
+                    </Button>
+                  )}
+                  {project.demo && (
+                    <Button size="sm" className="w-full md:w-auto md:text-base md:h-10" asChild>
+                      <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="w-4 h-4 mr-2" /> 
+                        {project.title === 'Scholar Seats' ? 'Visit' : 'Live Demo'}
+                      </a>
+                    </Button>
+                  )}
+                </motion.div>
+              </motion.div>
+              <motion.div 
+                className="relative flex items-center justify-center mb-6 md:mb-0 order-1 md:order-2"
+                variants={{
+                  hidden: { opacity: 0, x: 50 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg" 
+                />
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
   )
 }
 

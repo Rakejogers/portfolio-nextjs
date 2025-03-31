@@ -10,39 +10,91 @@ const Education = () => {
   })
 
   return (
-    <section id="education" className="py-20">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-12 text-center">Education</h2>
+    <section id="education" className="relative min-h-screen flex items-center justify-center py-16 md:py-20">
+      {/* Background GIFs - Hidden on small screens */}
+      <div className="absolute inset-0 w-full h-full hidden md:flex items-center justify-between z-0">
+        {/* Left GIF */}
+        <div className="h-full flex items-center -ml-[20%]">
+          <img 
+            src="/picture6.gif" 
+            alt="Education Background Left" 
+            className="h-[150vh] w-auto object-cover" 
+          />
+        </div>
+        {/* Right GIF (Mirrored) */}
+        <div className="h-full flex items-center -mr-[20%]">
+          <img 
+            src="/picture6.gif" 
+            alt="Education Background Right" 
+            className="h-[150vh] w-auto object-cover transform scale-x-[-1]" 
+          />
+        </div>
+      </div>
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="bg-card text-card-foreground rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-border"
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-5xl mx-auto text-center"
         >
-          <h3 className="text-2xl font-bold mb-2 text-primary">University of Kentucky</h3>
-          <p className="text-xl mb-2">Bachelor of Science in Computer Science</p>
-          <p className="text-lg mb-4 text-muted-foreground">Expected Graduation: May 2027</p>
-          <div className="mb-4">
-            <h4 className="text-lg font-semibold mb-2">Relevant Coursework:</h4>
-            <ul className="list-disc list-inside text-muted-foreground">
-              <li>Discrete Math</li>
-              <li>Intro to Program Design (C++)</li>
-              <li>Intro to Software Engineering Techniques (Linux)</li>
-            </ul>
-          </div>
-          <div className="mb-4">
-            <h4 className="text-lg font-semibold mb-2">Achievements:</h4>
-            <ul className="list-disc list-inside text-muted-foreground">
-              <li>4.00 GPA</li>
-              <li>Green Energy Club Member</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-2">Technical Skills:</h4>
-            <p className="text-muted-foreground">
-              Proficient in C++, Python, JavaScript, HTML/CSS, MATLAB, AutoCAD; Basic understanding of React Native, Expo
-            </p>
+          <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-3 md:mb-4">I'm currently at</h2>
+          <h3 className="text-4xl md:text-7xl font-bold text-foreground mb-6 md:mb-8">University of Kentucky</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-foreground">
+            {/* Main Education Info */}
+            <div className="space-y-6 md:space-y-8">
+              <div className="space-y-3 md:space-y-4">
+                <p className="text-2xl md:text-3xl font-semibold text-primary">BS in Computer Science</p>
+                <p className="text-xl md:text-2xl text-muted-foreground">Expected: May 2027</p>
+                <p className="text-2xl md:text-3xl font-bold text-primary">GPA: 4.00</p>
+              </div>
+
+              <div>
+                <h4 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Technical Skills</h4>
+                <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">C++</span>
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">Python</span>
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">JavaScript</span>
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">HTML/CSS</span>
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">MATLAB</span>
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">AutoCAD</span>
+                  <span className="px-4 md:px-6 py-1 md:py-2 bg-secondary backdrop-blur-sm rounded-full text-sm md:text-lg">React Native</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Coursework and Activities */}
+            <div className="space-y-6 md:space-y-8">
+              <div>
+                <h4 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Key Coursework</h4>
+                <ul className="space-y-3 md:space-y-4 text-lg md:text-xl text-muted-foreground">
+                  <li className="flex items-center justify-center">
+                    <span className="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                    Discrete Math
+                  </li>
+                  <li className="flex items-center justify-center">
+                    <span className="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                    Intro to Program Design (C++)
+                  </li>
+                  <li className="flex items-center justify-center">
+                    <span className="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                    Intro to Software Engineering
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">Activities</h4>
+                <ul className="space-y-3 md:space-y-4 text-lg md:text-xl text-muted-foreground">
+                  <li className="flex items-center justify-center">
+                    <span className="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                    Green Energy Club Member
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
