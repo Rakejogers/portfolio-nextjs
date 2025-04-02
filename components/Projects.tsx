@@ -49,7 +49,7 @@ const Projects = () => {
       tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
       demo: 'https://scholarseats.com',
       github: 'https://github.com/rakejogers/student-ticket-app',
-      image: '/project1.gif',
+      image: '/project1.webm',
     },
     {
       title: 'Snake Game Neural Network',
@@ -57,7 +57,7 @@ const Projects = () => {
       longDescription: 'An AI agent that learns to play Snake using deep reinforcement learning.',
       tech: ['Python', 'PyTorch'],
       github: 'https://github.com/rakejogers/snake_game_ai',
-      image: '/project2.gif',
+      image: '/project2.webm',
     },
     {
       title: 'Video Sharing Mobile App',
@@ -65,15 +65,15 @@ const Projects = () => {
       longDescription: 'A mobile application for sharing AI-generated videos using React Native and Appwrite Database.',
       tech: ['React Native', 'Expo', 'JavaScript'],
       github: 'https://github.com/rakejogers/jsMastery-Aora',
-      image: '/project3.gif',
+      image: '/project3.webm',
     },
     {
       title: 'Portfolio Website',
       description: 'Modern portfolio with Next.js',
-      longDescription: 'My portfolio website built with Next.js and Tailwind CSS. Features a dark mode toggle and smooth scrolling.',
+      longDescription: 'My portfolio website you\'re on that I\'ve built with Next.js and Tailwind CSS. Features smooth scrolling, animations, and cool blobs.',
       tech: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Vercel'],
       github: 'https://github.com/Rakejogers/portfolio-nextjs',
-      image: '/project4.gif',
+      image: '/project4.webm',
     },
   ]
 
@@ -105,9 +105,12 @@ const Projects = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <div className="w-full h-full flex items-center justify-center">
-            <img 
-              src="/projects-list.gif" 
-              alt="Projects" 
+            <video 
+              src="/projects-list.webm" 
+              autoPlay
+              loop
+              muted
+              playsInline
               className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block" 
             />
           </div>
@@ -218,9 +221,12 @@ const Projects = () => {
                 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <img 
+                <video 
                   src={project.image} 
-                  alt={project.title} 
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg" 
                 />
               </motion.div>

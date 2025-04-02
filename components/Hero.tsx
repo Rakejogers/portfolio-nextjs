@@ -51,10 +51,13 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
       {/* Animated background placeholder - will be replaced with actual GIF/animation */}
       <div className="absolute inset-0 z-0">
         <div className="w-full h-full flex items-center justify-center">
-          <img 
-            src="/hero.gif" 
-            alt="Animated background" 
-            className="object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150 md:scale-[2]"
+          <video
+            src="/hero.webm"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150 md:scale-[1.2]"
           />
         </div>
       </div>

@@ -12,21 +12,27 @@ const Education = () => {
   return (
     <section id="education" className="relative min-h-screen flex items-center justify-center py-16 md:py-20">
       {/* Background GIFs - Hidden on small screens */}
-      <div className="absolute inset-0 w-full h-full hidden md:flex items-center justify-between z-0">
+      <div className="absolute inset-0 w-full h-full hidden md:flex items-center justify-between z-10">
         {/* Left GIF */}
         <div className="h-full flex items-center -ml-[20%]">
-          <img 
-            src="/picture6.gif" 
-            alt="Education Background Left" 
-            className="h-[150vh] w-auto object-cover" 
+          <video
+            src="/education.webm"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-[150vh] w-auto object-cover"
           />
         </div>
         {/* Right GIF (Mirrored) */}
         <div className="h-full flex items-center -mr-[20%]">
-          <img 
-            src="/picture6.gif" 
-            alt="Education Background Right" 
-            className="h-[150vh] w-auto object-cover transform scale-x-[-1]" 
+          <video
+            src="/education.webm"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-[150vh] w-auto object-cover transform scale-x-[-1]"
           />
         </div>
       </div>

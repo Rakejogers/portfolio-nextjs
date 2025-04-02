@@ -12,21 +12,21 @@ const Header = () => {
   
   useEffect(() => {
     // Ensure this code runs only on the client
-    if (typeof window === 'undefined' || !document.body) {
+    if (typeof window === 'undefined') {
       return;
     }
 
     const handleScroll = () => {
-      const currentScrollY = document.documentElement.scrollTop || document.body.scrollTop;
-      setScrolled(currentScrollY > 50);
+      // Use window.scrollY which is more standard
+      setScrolled(window.scrollY > 50);
     };
 
-    // Attach scroll event listener to body
-    document.body.addEventListener('scroll', handleScroll, { passive: true });
+    // Attach scroll event listener to window
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Cleanup: remove event listener when component unmounts
     return () => {
-      document.body.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []); // Empty dependency array ensures this effect runs only once on mount
 

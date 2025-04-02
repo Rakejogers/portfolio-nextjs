@@ -58,9 +58,6 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
   }
   
   /* Smooth scrolling */
@@ -163,6 +160,7 @@
 .glass-effect {
   background: rgba(var(--card) / 0.7);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
   border: 1px solid rgba(var(--border) / 0.3);
 }
 
