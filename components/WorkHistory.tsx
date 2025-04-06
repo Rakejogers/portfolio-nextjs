@@ -2,80 +2,115 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { Timeline } from '@/components/ui/timeline'
 
 const workHistory = [
   {
-    title: 'Engineering Prototyping Guide',
-    company: 'University of Kentucky Innovation Center',
-    date: 'Aug 2024 - Present',
-    description: [
-      'Collaborated with 30 other peers to run the university\'s engineering makerspace',
-      'Guided students in the design and prototyping of engineering projects',
-      'Provided hands-on assistance with 3D printing, laser cutting, CNC machining, and other fabrication techniques',
-    ],
+    title: '2024 - Present',
+    content: (
+      <div className="flex flex-col space-y-4">
+        <div>
+          <h3 className="text-lg md:text-xl font-bold text-primary">Engineering Prototyping Guide</h3>
+          <h4 className="font-semibold text-base md:text-lg">University of Kentucky Innovation Center</h4>
+          <p className="text-xs md:text-sm text-muted-foreground">Aug 2024 - Present</p>
+        </div>
+        
+        <div className="space-y-2">
+          {[
+            'Collaborated with 30 other peers to run the university\'s engineering makerspace',
+            'Guided students in the design and prototyping of engineering projects',
+            'Provided hands-on assistance with 3D printing, laser cutting, CNC machining, and other fabrication techniques',
+          ].map((item, i) => (
+            <div key={i} className="flex items-start">
+              <span className="w-2 h-2 bg-primary rounded-full mt-1.5 md:mt-2 mr-2 md:mr-3 flex-shrink-0"></span>
+              <p className="text-sm md:text-base text-foreground">{item}</p>
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          <span className="px-3 md:px-4 py-1 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm">3D Printing</span>
+          <span className="px-3 md:px-4 py-1 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm">CNC</span>
+          <span className="px-3 md:px-4 py-1 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm">Prototyping</span>
+        </div>
+      </div>
+    ),
   },
   {
-    title: 'IT Technician',
-    company: 'Grayson County Board of Education',
-    date: 'May 2024 - Aug 2024',
-    description: [
-      'Worked alongside others to upkeep all the technology across various schools in the district',
-      'Learned practices of networking, cybersecurity, and cloud system management',
-      'Quickly responded to various service issues and requests from staff across the district',
-    ],
+    title: 'Summer 2024',
+    content: (
+      <div className="flex flex-col space-y-4">
+        <div>
+          <h3 className="text-lg md:text-xl font-bold text-primary">IT Technician</h3>
+          <h4 className="font-semibold text-base md:text-lg">Grayson County Board of Education</h4>
+          <p className="text-xs md:text-sm text-muted-foreground">May 2024 - Aug 2024</p>
+        </div>
+        
+        <div className="space-y-2">
+          {[
+            'Worked alongside others to upkeep all the technology across various schools in the district',
+            'Learned practices of networking, cybersecurity, and cloud system management',
+            'Quickly responded to various service issues and requests from staff across the district',
+          ].map((item, i) => (
+            <div key={i} className="flex items-start">
+              <span className="w-2 h-2 bg-primary rounded-full mt-1.5 md:mt-2 mr-2 md:mr-3 flex-shrink-0"></span>
+              <p className="text-sm md:text-base text-foreground">{item}</p>
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          <span className="px-3 md:px-4 py-1 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm">Networking</span>
+          <span className="px-3 md:px-4 py-1 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm">Cybersecurity</span>
+          <span className="px-3 md:px-4 py-1 bg-secondary text-secondary-foreground rounded-full text-xs md:text-sm">IT Support</span>
+        </div>
+      </div>
+    ),
   },
 ]
 
 const WorkHistory = () => {
-  return (
-    <section id="experience" className="py-20">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-12 text-center">Work Experience</h2>
-        <div className="relative">
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-border hidden md:block"></div>
-          {workHistory.map((job, index) => (
-            <TimelineItem key={index} job={job} index={index} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const TimelineItem = ({ job, index }: { job: any; index: number }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.2 }}
-      className={`mb-8 md:flex justify-between items-center w-full ${
-        index % 2 === 0 ? 'md:flex-row-reverse' : ''
-      }`}
-    >
-      <div className="order-1 md:w-5/12 hidden md:block"></div>
-      <div className="z-20 hidden md:flex items-center order-1 bg-primary shadow-xl w-8 h-8 rounded-full">
-        <h1 className="mx-auto font-semibold text-lg text-primary-foreground">{index + 1}</h1>
-      </div>
-      <motion.div
-        whileHover={{ scale: 1.03 }}
-        className="order-1 bg-card rounded-lg shadow-xl md:w-5/12 w-full px-6 py-4 border border-border"
-      >
-        <h3 className="font-bold text-xl mb-1 text-primary">{job.title}</h3>
-        <h4 className="font-semibold text-lg mb-1">{job.company}</h4>
-        <p className="text-sm text-muted-foreground mb-2">{job.date}</p>
-        <ul className="list-disc list-inside text-sm text-card-foreground space-y-1">
-          {job.description.map((item: string, i: number) => (
-            <li key={i}>{item}</li>
+    <section id="experience" className="min-h-screen py-16 md:py-20">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="w-full max-w-5xl mx-auto text-center mb-8 md:mb-12"
+        >
+          <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-3 md:mb-4">Professional Journey</h2>
+          <h3 className="text-3xl md:text-5xl font-bold text-foreground">Work Experience</h3>
+        </motion.div>
+
+        {/* Timeline for desktop */}
+        <div className="w-full max-w-6xl mx-auto hidden md:block">
+          <Timeline data={workHistory} />
+        </div>
+
+        {/* Simple list view for mobile */}
+        <div className="md:hidden space-y-10 px-4">
+          {workHistory.map((item, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className="bg-card/50 backdrop-blur-sm p-5 rounded-lg border border-border/50"
+            >
+              <h4 className="text-lg font-bold mb-4 text-primary">{item.title}</h4>
+              {item.content}
+            </motion.div>
           ))}
-        </ul>
-      </motion.div>
-    </motion.div>
+        </div>
+      </div>
+    </section>
   )
 }
 

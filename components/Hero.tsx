@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { ChevronDown, Terminal, ExternalLink, MousePointer } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { GooeyText } from "@/components/ui/gooey-text-morphing"
 
 interface HeroProps {
   scrollToProjects: () => void
@@ -16,12 +17,16 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const { scrollYProgress } = useScroll();
+  const [isSafari, setIsSafari] = useState(false); // State for Safari detection
   
   const headingOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const headingY = useTransform(scrollYProgress, [0, 0.2], [0, -50]);
   
   // Track mouse movement for different effects
   useEffect(() => {
+    // Safari detection
+    setIsSafari(/iPad|iPhone|iPod/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/(Chrome|CriOS)/.test(navigator.userAgent));
+
     const handleMouseMove = (e: MouseEvent) => {
       // For parallax effects (relative positioning)
       setMousePosition({
@@ -46,144 +51,100 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
   });
 
   return (
-    <section ref={containerRef} className="relative container mx-auto px-4 py-0 min-h-screen flex flex-col justify-center overflow-hidden">
-      {/* Interactive cursor follower - using absolute positioning */}
-      <motion.div 
-        className="fixed w-8 h-8 rounded-full border border-primary/50 pointer-events-none z-50 hidden md:flex items-center justify-center"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-        animate={{
-          x: cursorPosition.x,
-          y: cursorPosition.y
-        }}
-        transition={{
-          type: "spring",
-          damping: 28,
-          stiffness: 500,
-          mass: 0.2
-        }}
-      >
-        <motion.div 
-          className="w-2 h-2 bg-primary rounded-full"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        />
-      </motion.div>
+    <section className="relative min-h-screen flex flex-col justify-center items-center bg-transparent text-foreground">
+      {/* Animated background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="w-full h-full flex items-center justify-center">
+          {isSafari ? (
+            <img 
+              src="/hero.png" 
+              alt="Hero background" 
+              className="object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150 md:scale-[1.2]"
+            />
+          ) : (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-150 md:scale-[1.2]"
+            >
+              {/* WebM source for most browsers */}
+              <source src="/hero.webm" type="video/webm" />
+              {/* Optional: Add an older fallback like OGV */}
+              Your browser does not support the video tag or the webm format. 
+            </video>
+          )}
+        </div>
+      </div>
 
-      {/* Main content */}
-      <motion.div
-        className="relative z-10 max-w-3xl mx-auto"
-        style={{ 
-          opacity: headingOpacity,
-          y: headingY
-        }}
-      >
-        <motion.div 
-          className="flex items-center mb-6 space-x-3"
+      {/* Content */}
+      <div className="relative z-20 container mx-auto px-4 md:px-6 text-center mt-20 md:mt-0">
+        {/* NEW: Safari iOS Banner (Moved and repositioned) */}
+        {isSafari && (
+          <motion.div
+            initial={{ opacity: 0, y: -30 }} // Animate from top (relative to container)
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            // Removed fixed positioning, added margin bottom
+            className="flex justify-center items-center mb-4 md:mb-6" 
+          >
+            <div className="bg-background/5 border border-border backdrop-blur-lg py-2 px-4 rounded-full shadow-lg">
+              <p className="text-sm text-foreground/80 text-center">
+                For the best experience, please visit on desktop.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-bold mb-4 md:mb-8 bg-clip-text text-foreground from-fuchsia-500 to-purple-600"
+        >
+          JAKE ROGERS
+        </motion.h1>
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
+          className="mb-6 md:mb-8"
         >
-          <Badge variant="outline" className="py-2 text-primary border-primary/50">
-            <Terminal className="w-3 h-3 mr-1" /> Available for hire
-          </Badge>
-          <motion.div 
-            className="h-px flex-grow bg-gradient-to-r from-primary/10 via-primary/50 to-primary/10"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1.5, delay: 0.3 }}
+          <GooeyText 
+            texts={["I'm a software developer.", "I'm a student.", "I'm a design engineer."]} 
+            morphTime={1.5}
+            cooldownTime={1.5}
+            className="h-8 md:h-12"
+            textClassName="text-lg sm:text-xl md:text-2xl lg:text-3xl"
           />
         </motion.div>
 
+        {/* Call to action buttons */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <motion.h1 
-            className="text-5xl md:text-7xl font-bold mb-6 leading-[1.1] tracking-tight"
-          >
-            <div className="flex flex-col">
-              <motion.span 
-                initial={{ x: -40, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="block"
-              >
-                Hi, I&apos;m
-              </motion.span>
-              <motion.span 
-                initial={{ x: -40, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="block bg-gradient-to-r from-blue-600 via-primary to-purple-600 text-transparent bg-clip-text"
-              >
-                Jake Rogers
-              </motion.span>
-            </div>
-          </motion.h1>
-          
-          <motion.p 
-            className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            A passionate developer and student at the University of Kentucky building innovative solutions for real-world problems.
-          </motion.p>
-        </motion.div>
-        
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8 z-30 relative pointer-events-auto"
         >
           <Button 
+            onClick={scrollToProjects} 
             size="lg" 
-            onClick={scrollToProjects}
-            className="group relative overflow-hidden"
+            className="w-full sm:w-auto text-sm md:text-base"
           >
-            <span className="relative z-10 flex items-center">
-              View Projects
-              <motion.span
-                animate={{ y: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-                className="ml-2"
-              >
-                <ChevronDown className="w-4 h-4" />
-              </motion.span>
-            </span>
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            View Projects
           </Button>
-          
           <Button 
-            size="lg" 
+            onClick={scrollToContact} 
             variant="outline" 
-            onClick={scrollToContact}
-            className="group relative overflow-hidden"
+            size="lg" 
+            className="w-full sm:w-auto text-sm md:text-base"
           >
-            <span className="relative z-10">Contact Me</span>
-            <span className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            Contact Me
           </Button>
         </motion.div>
-      </motion.div>
-      
-      {/* Scroll indicator */}
-      <motion.div 
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-muted-foreground"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-      >
-        <MousePointer className="w-4 h-4 mb-2 animate-bounce" />
-        <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
-      </motion.div>
+      </div>
     </section>
   )
 }

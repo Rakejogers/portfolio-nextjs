@@ -64,21 +64,18 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+    overflow-x: hidden;
+    width: 100%;
   }
 }
 
 /* Section styling */
 .section-transition {
-  position: relative;
-  z-index: 1;
+  @apply relative py-20;
 }
 
 .section-content {
-  position: relative;
-  z-index: 2;
-  background-color: hsl(var(--background) / 0.7);
-  backdrop-filter: blur(8px);
-  padding: 2rem 0;
+  @apply container mx-auto px-6;
 }
 
 /* Grid background */
@@ -163,6 +160,7 @@
 .glass-effect {
   background: rgba(var(--card) / 0.7);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
   border: 1px solid rgba(var(--border) / 0.3);
 }
 
@@ -231,5 +229,15 @@
 ::selection {
   background-color: hsl(var(--primary) / 0.1);
   color: hsl(var(--primary));
+}
+
+/* Custom gradient text effect */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-purple-600;
+}
+
+/* Custom gradient background */
+.gradient-bg {
+  @apply bg-gradient-to-b from-purple-900 via-fuchsia-600 to-purple-900;
 }
 
