@@ -2,38 +2,60 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { useState, useEffect } from 'react'
 
 const Education = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   })
+  const [isSafari, setIsSafari] = useState(false);
+
+  useEffect(() => {
+    setIsSafari(/iPad|iPhone|iPod/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/(Chrome|CriOS)/.test(navigator.userAgent));
+  }, []);
 
   return (
     <section id="education" className="relative min-h-screen flex items-center justify-center py-16 md:py-20">
-      {/* Background GIFs - Hidden on small screens */}
+      {/* Background Assets */}
       <div className="absolute inset-0 w-full h-full hidden md:flex items-center justify-between z-10">
-        {/* Left GIF */}
+        {/* Left Asset */}
         <div className="h-full flex items-center -ml-[20%]">
-          <video
-            src="/education.webm"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-[150vh] w-auto object-cover"
-          />
+          {isSafari ? (
+            <img 
+              src="/education.png" 
+              alt="Education background left" 
+              className="h-[150vh] w-auto object-cover"
+            />
+          ) : (
+            <video
+              src="/education.webm"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-[150vh] w-auto object-cover"
+            />
+          )}
         </div>
-        {/* Right GIF (Mirrored) */}
+        {/* Right Asset (Mirrored) */}
         <div className="h-full flex items-center -mr-[20%]">
-          <video
-            src="/education.webm"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-[150vh] w-auto object-cover transform scale-x-[-1]"
-          />
+          {isSafari ? (
+            <img 
+              src="/education.png" 
+              alt="Education background right" 
+              className="h-[150vh] w-auto object-cover transform scale-x-[-1]"
+            />
+          ) : (
+            <video
+              src="/education.webm"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-[150vh] w-auto object-cover transform scale-x-[-1]"
+            />
+          )}
         </div>
       </div>
       
@@ -45,7 +67,7 @@ const Education = () => {
           transition={{ duration: 0.8 }}
           className="w-full max-w-5xl mx-auto text-center"
         >
-          <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-3 md:mb-4">I'm currently at</h2>
+          <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-3 md:mb-4">I&apos;m currently at</h2>
           <h3 className="text-4xl md:text-7xl font-bold text-foreground mb-6 md:mb-8">University of Kentucky</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-foreground">

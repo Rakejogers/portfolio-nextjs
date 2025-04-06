@@ -44,7 +44,7 @@ export default function Home() {
         <div className="relative space-y-6 md:space-y-8">
           {/* Hero Card */}
           <div className="relative mb-12 md:mb-24">
-            <div className="rounded-2xl md:rounded-3xl bg-card p-4 md:p-6 shadow-2xl">
+            <div className="rounded-2xl md:rounded-3xl bg-card p-4 md:p-6 shadow-2xl pointer-events-auto">
               <Hero 
                 scrollToProjects={scrollToProjects} 
                 scrollToContact={scrollToContact}

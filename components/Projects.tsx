@@ -22,6 +22,7 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const projectRefs = useRef<(HTMLDivElement | null)[]>([])
   const [userCount, setUserCount] = useState<number>(0);
+  const [isSafari, setIsSafari] = useState(false);
   
   const scrollToProject = (index: number) => {
     projectRefs.current[index]?.scrollIntoView({ behavior: "smooth" })
@@ -39,6 +40,9 @@ const Projects = () => {
       }
     };
     fetchUserCount();
+
+    // Safari detection
+    setIsSafari(/iPad|iPhone|iPod/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/(Chrome|CriOS)/.test(navigator.userAgent));
   }, []);
 
   const projects = [
@@ -51,6 +55,15 @@ const Projects = () => {
       github: 'https://github.com/rakejogers/student-ticket-app',
       image: '/project1.webm',
     },
+
+    {
+      title: 'Factify (Fact Checking Chrome Extension)',
+      description: 'A Chrome extension for fact checking any claims on the web which won CatHacks XI Overall Best Hack',
+      longDescription: 'Factify is a Google Chrome Extension me and a team built that won CatHacks XI Overall Best Hack. It will evaluate a highlighted statement or webpage for factual accuracy and bias by using Perplexity\'s Sonar-Reasoning-Pro API. ',
+      tech: ['HTML', 'CSS', 'JavaScript', 'Perplexity API', 'Google Chrome Extension API'],
+      github: 'https://github.com/ImNateBerry/Factify',
+      image: '/project3.webm',
+    },
     {
       title: 'Snake Game Neural Network',
       description: 'AI agent learning through reinforcement',
@@ -58,14 +71,6 @@ const Projects = () => {
       tech: ['Python', 'PyTorch'],
       github: 'https://github.com/rakejogers/snake_game_ai',
       image: '/project2.webm',
-    },
-    {
-      title: 'Video Sharing Mobile App',
-      description: 'Mobile app for AI-generated videos',
-      longDescription: 'A mobile application for sharing AI-generated videos using React Native and Appwrite Database.',
-      tech: ['React Native', 'Expo', 'JavaScript'],
-      github: 'https://github.com/rakejogers/jsMastery-Aora',
-      image: '/project3.webm',
     },
     {
       title: 'Portfolio Website',
@@ -105,14 +110,22 @@ const Projects = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <div className="w-full h-full flex items-center justify-center">
-            <video 
-              src="/projects-list.webm" 
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block" 
-            />
+            {isSafari ? (
+              <img 
+                src="/projects-list.png" 
+                alt="Projects list background" 
+                className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block"
+              />
+            ) : (
+              <video 
+                src="/projects-list.webm" 
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block" 
+              />
+            )}
           </div>
         </motion.div>
         
@@ -221,14 +234,22 @@ const Projects = () => {
                 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <video 
-                  src={project.image} 
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg" 
-                />
+                {isSafari ? (
+                  <img 
+                    src={project.image?.replace('.webm', '.png')}
+                    alt={`${project.title} preview`} 
+                    className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg"
+                  />
+                ) : (
+                  <video 
+                    src={project.image} 
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg" 
+                  />
+                )}
               </motion.div>
             </div>
           </div>
