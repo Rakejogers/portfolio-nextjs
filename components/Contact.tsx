@@ -28,7 +28,7 @@ const Contact = () => {
           </p>
           <div className="flex flex-col md:flex-row justify-center md:space-x-4 space-y-3 md:space-y-0">
             <Button variant="outline" size="lg" className="w-full md:w-auto" asChild>
-              <a href="https://luky-my.sharepoint.com/personal/jbro248_uky_edu/Documents/Documents/Resume%20-%20Jake%20Rogers.pdf" download="Jake_Rogers_Resume.pdf" className="flex items-center justify-center" target="_blank" rel="noopener noreferrer">
+              <a href="/Resume.pdf" download="Jake_Rogers_Resume.pdf" className="flex items-center justify-center" target="_blank" rel="noopener noreferrer">
                 <Download className="w-4 h-4 mr-2" /> Resume
               </a>
             </Button>

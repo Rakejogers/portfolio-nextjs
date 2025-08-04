@@ -16,12 +16,12 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
       <LavaLamp />
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-6">
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 md:px-6 mix-blend-difference hero-heading">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight mix-blend-exclusion text-white mb-6 px-2 sm:px-0"
+          className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight text-white mb-6 px-2 sm:px-0 mix-blend-difference hero-heading"
         >
           JAKE ROGERS
         </motion.h1>
@@ -30,7 +30,7 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-base sm:text-lg md:text-xl text-center text-white mix-blend-exclusion max-w-2xl leading-relaxed mb-8 sm:mb-12 mx-auto px-2 sm:px-0"
+          className="text-base sm:text-lg md:text-xl text-center text-white max-w-2xl leading-relaxed mb-8 sm:mb-12 mx-auto px-2 sm:px-0 mix-blend-difference hero-heading "
         >
           Computer Science Student at the University of Kentucky.
         </motion.p>
@@ -45,7 +45,7 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
           <Button 
             onClick={scrollToProjects} 
             size="lg" 
-            className="w-full max-w-xs sm:w-auto bg-white text-black hover:bg-gray-200 mix-blend-exclusion border-0"
+            className="w-full max-w-xs sm:w-auto bg-white text-black hover:bg-gray-200 mix-blend-difference hero-heading border-0"
           >
             View Projects
           </Button>
@@ -53,7 +53,7 @@ const Hero = ({ scrollToProjects, scrollToContact }: HeroProps) => {
             onClick={scrollToContact} 
             variant="ghost"
             size="lg" 
-            className="w-full max-w-xs sm:w-auto border-2 border-white text-white hover:bg-white hover:text-black mix-blend-exclusion"
+            className="w-full max-w-xs sm:w-auto border-2 border-white text-white hover:bg-white hover:text-black mix-blend-difference hero-heading"
           >
             Resume/Contact
           </Button>

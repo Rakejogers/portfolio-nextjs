@@ -78,6 +78,11 @@
   }
 }
 
+.hero-heading {
+  transform: translateZ(0);          /* forces GPU layer, fixes WebKit bug */
+  isolation: isolate;                /* ensures a proper stacking context */
+}
+
 /* Essential section utilities */
 .section-transition {
   @apply relative py-20;
