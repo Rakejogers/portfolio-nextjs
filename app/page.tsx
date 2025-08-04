@@ -33,24 +33,23 @@ export default function Home() {
 
 
   return (
-    <main className="relative min-h-screen bg-background p-2 md:p-4 lg:p-8">
+    <main className="relative min-h-screen bg-background">
       <motion.div
         key="content"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative mx-auto max-w h-screen"
+        className="relative"
       >
-        <div className="relative space-y-6 md:space-y-8">
-          {/* Hero Card */}
-          <div className="relative mb-12 md:mb-24">
-            <div className="rounded-2xl md:rounded-3xl bg-card p-4 md:p-6 shadow-2xl pointer-events-auto">
-              <Hero 
-                scrollToProjects={scrollToProjects} 
-                scrollToContact={scrollToContact}
-              />
-            </div>
-          </div>
+        <div className="relative">
+          {/* Hero Section - Full Screen */}
+          <Hero 
+            scrollToProjects={scrollToProjects} 
+            scrollToContact={scrollToContact}
+          />
+          
+          {/* Content Cards with minimal spacing */}
+          <div className="space-y-4 sm:space-y-6 md:space-y-8 bg-card/80 backdrop-blur-md p-1 sm:p-2 md:p-4 lg:p-8 pb-20 sm:pb-2 md:pb-4 lg:pb-8">
 
           {/* Projects Card */}
           <motion.div
@@ -58,7 +57,7 @@ export default function Home() {
             className="relative"
             ref={projectsRef}
           >
-            <div className="rounded-2xl md:rounded-3xl bg-card/80 backdrop-blur-md p-4 md:p-6 shadow-2xl border border-border/30">
+            <div className="rounded-xl sm:rounded-2xl md:rounded-3xl bg-card/80 backdrop-blur-md p-3 sm:p-4 md:p-6 shadow-2xl border border-border">
               <div className="section-content">
                 <Projects />
               </div>
@@ -71,7 +70,7 @@ export default function Home() {
             className="relative"
             ref={workRef}
           >
-            <div className="rounded-2xl md:rounded-3xl bg-card/80 backdrop-blur-md p-4 md:p-6 shadow-2xl border border-border/30">
+            <div className="rounded-xl sm:rounded-2xl md:rounded-3xl bg-white p-3 sm:p-4 md:p-6 shadow-2xl border border-gray-200">
               <div className="section-content">
                 <WorkHistory />
               </div>
@@ -84,7 +83,7 @@ export default function Home() {
             className="relative"
             ref={educationRef}
           >
-            <div className="rounded-2xl md:rounded-3xl bg-card backdrop-blur-md p-4 md:p-6 shadow-2xl border border-border/30">
+            <div className="rounded-xl sm:rounded-2xl md:rounded-3xl bg-white p-3 sm:p-4 md:p-6 shadow-2xl border border-gray-200">
               <div className="section-content">
                 <Education />
               </div>
@@ -97,7 +96,7 @@ export default function Home() {
             className="relative"
             ref={contactRef}
           >
-            <div className="rounded-2xl md:rounded-3xl bg-card/80 backdrop-blur-md p-4 md:p-6 shadow-2xl border border-border/30">
+            <div className="rounded-xl sm:rounded-2xl md:rounded-3xl bg-white p-3 sm:p-4 md:p-6 shadow-2xl border border-gray-200">
               <div className="section-content">
                 <Contact />
               </div>
@@ -108,6 +107,8 @@ export default function Home() {
           <div className="relative">
               <Footer />
           </div>
+          
+          </div> {/* Close content cards div */}
         </div>
       </motion.div>
     </main>

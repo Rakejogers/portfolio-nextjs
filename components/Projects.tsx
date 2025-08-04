@@ -6,6 +6,7 @@ import { ExternalLink, Github } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import PocketBase from 'pocketbase';
+import ProjectMedia from '@/components/MediaPlayer';
 
 interface Project {
   title: string
@@ -14,6 +15,7 @@ interface Project {
   demo?: string
   github?: string
   longDescription?: string
+  image: string
 }
 
 const pb = new PocketBase('https://pocketbase.scholarseats.com');
@@ -53,16 +55,16 @@ const Projects = () => {
       tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
       demo: 'https://scholarseats.com',
       github: 'https://github.com/rakejogers/student-ticket-app',
-      image: '/project1.webm',
+      image: '/scholar-seats-demo.mp4',
     },
 
     {
-      title: 'Factify (Fact Checking Chrome Extension)',
+      title: 'Factify (First Place at CatHacks XI)',
       description: 'A Chrome extension for fact checking any claims on the web which won CatHacks XI Overall Best Hack',
       longDescription: 'Factify is a Google Chrome Extension me and a team built that won CatHacks XI Overall Best Hack. It will evaluate a highlighted statement or webpage for factual accuracy and bias by using Perplexity\'s Sonar-Reasoning-Pro API. ',
       tech: ['HTML', 'CSS', 'JavaScript', 'Perplexity API', 'Google Chrome Extension API'],
       github: 'https://github.com/ImNateBerry/Factify',
-      image: '/project3.webm',
+      image: '/factify.png',
     },
     {
       title: 'Snake Game Neural Network',
@@ -70,7 +72,7 @@ const Projects = () => {
       longDescription: 'An AI agent that learns to play Snake using deep reinforcement learning.',
       tech: ['Python', 'PyTorch'],
       github: 'https://github.com/rakejogers/snake_game_ai',
-      image: '/project2.webm',
+      image: '/snake-project-demo.mp4',
     },
     {
       title: 'Portfolio Website',
@@ -78,86 +80,12 @@ const Projects = () => {
       longDescription: 'My portfolio website you\'re on that I\'ve built with Next.js and Tailwind CSS. Features smooth scrolling, animations, and cool blobs.',
       tech: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Vercel'],
       github: 'https://github.com/Rakejogers/portfolio-nextjs',
-      image: '/project4.webm',
+      image: '/portfolio-demo.mp4',
     },
   ]
 
   return (
-    <div className="min-h-screen bg-transparent text-foreground">
-      {/* Projects List View */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="min-h-screen relative overflow-hidden bg-transparent"
-      >
-        {/* Mobile Projects Header */}
-        <div className="md:hidden text-center py-8">
-          <motion.h1 
-            className="text-4xl font-bold mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            My Projects
-          </motion.h1>
-        </div>
-
-        <motion.div 
-          className="absolute right-0 top-0 bottom-0 w-full md:w-[55%] flex items-center justify-end"
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="w-full h-full flex items-center justify-center">
-            {isSafari ? (
-              <img 
-                src="/projects-list.png" 
-                alt="Projects list background" 
-                className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block"
-              />
-            ) : (
-              <video 
-                src="/projects-list.webm" 
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-auto h-[50vh] md:h-[90vh] object-contain hidden md:block" 
-              />
-            )}
-          </div>
-        </motion.div>
-        
-        <div className="absolute left-0 top-0 bottom-0 w-full md:w-[45%] flex items-center">
-          <div className="px-4 md:px-12 w-full">
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold mb-8 md:mb-16 hidden md:block"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              My Projects
-            </motion.h1>
-            <div className="space-y-4 md:space-y-8 w-full">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  className="cursor-pointer group w-full"
-                  onClick={() => scrollToProject(index)}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  whileHover={{ x: 20 }}
-                >
-                  <h2 className="text-2xl md:text-4xl font-light mb-1 md:mb-2">{project.title}</h2>
-                  <p className="text-sm md:text-base text-muted-foreground">{project.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.div>
+    <div className="min-h-screen bg-white text-black">
 
       {/* Individual Project Sections */}
       {projects.map((project, index) => (
@@ -185,7 +113,7 @@ const Projects = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <h2 className="text-4xl md:text-6xl font-bold">{project.title}</h2>
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">{project.longDescription}</p>
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed">{project.longDescription}</p>
                 <motion.div 
                   className="flex flex-wrap gap-2 md:gap-3"
                   variants={{
@@ -209,7 +137,7 @@ const Projects = () => {
                   transition={{ duration: 0.4, delay: 0.5 }}
                 >
                   {project.github && (
-                    <Button variant="outline" size="sm" className="w-full md:w-auto md:text-base md:h-10" asChild>
+                    <Button variant="outline" size="default" className="w-full md:w-auto" asChild>
                       <a href={project.github} target="_blank" rel="noopener noreferrer">
                         <Github className="w-4 h-4 mr-2" /> 
                         View Code
@@ -217,7 +145,7 @@ const Projects = () => {
                     </Button>
                   )}
                   {project.demo && (
-                    <Button size="sm" className="w-full md:w-auto md:text-base md:h-10" asChild>
+                    <Button size="default" className="w-full md:w-auto" asChild>
                       <a href={project.demo} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-4 h-4 mr-2" /> 
                         {project.title === 'Scholar Seats' ? 'Visit' : 'Live Demo'}
@@ -234,22 +162,7 @@ const Projects = () => {
                 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                {isSafari ? (
-                  <img 
-                    src={project.image?.replace('.webm', '.png')}
-                    alt={`${project.title} preview`} 
-                    className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg"
-                  />
-                ) : (
-                  <video 
-                    src={project.image} 
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full md:w-auto h-auto max-w-full md:max-w-none object-contain rounded-lg shadow-lg" 
-                  />
-                )}
+                <ProjectMedia project={project} isSafari={isSafari} />
               </motion.div>
             </div>
           </div>
