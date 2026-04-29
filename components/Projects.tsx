@@ -30,7 +30,7 @@ const Projects = () => {
       tech: ['Next.js', 'React', 'Tailwind CSS', 'Supabase', 'Vapi', 'Edge Functions'],
       demo: 'https://nora-topaz.vercel.app',
       devpost: 'https://devpost.com/software/nora-3gdjy6?ref_content=my-projects-tab&ref_feature=my_projects',
-      image: '/portfolio-demo.mp4',
+      image: '/nora-landing.png',
     },
     {
       title: 'Scholar Seats',
