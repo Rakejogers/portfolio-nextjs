@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { motion, useInView, useMotionTemplate, useMotionValue, AnimatePresence } from 'framer-motion'
+import { useRef } from 'react'
+import { motion } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import PocketBase from 'pocketbase';
 import ProjectMedia from '@/components/MediaPlayer';
 
 interface Project {
@@ -13,49 +12,35 @@ interface Project {
   description: string
   tech: string[]
   demo?: string
+  devpost?: string
   github?: string
   longDescription?: string
   image: string
+  poster?: string
 }
 
-const pb = new PocketBase('https://pocketbase.scholarseats.com');
-
 const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const projectRefs = useRef<(HTMLDivElement | null)[]>([])
-  const [userCount, setUserCount] = useState<number>(0);
-  const [isSafari, setIsSafari] = useState(false);
-  
-  const scrollToProject = (index: number) => {
-    projectRefs.current[index]?.scrollIntoView({ behavior: "smooth" })
-    setSelectedProject(index)
-  }
-
-  // Fetch scholar seats user count from Pocketbase
-  useEffect(() => {
-    const fetchUserCount = async () => {
-      try {
-        const record = await pb.collection('num_users').getOne('1');
-        setUserCount(Math.round(record.totalUsers / 5) * 5);
-      } catch (error) {
-        console.error('Error fetching user count:', error);
-      }
-    };
-    fetchUserCount();
-
-    // Safari detection
-    setIsSafari(/iPad|iPhone|iPod/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/(Chrome|CriOS)/.test(navigator.userAgent));
-  }, []);
 
   const projects = [
     {
+      title: 'Nora (First Place at CatHacks XII)',
+      description: 'An AI voice companion that calls seniors on their phone',
+      longDescription: 'Nora is an AI voice companion for seniors that places gentle scheduled phone calls, captures check-in context like mood, reminders, and daily plans, and gives guardians a dashboard for setup, schedules, manual calls, call history, transcripts, and summaries. Awarded Most Wanted (First Place) at CatHacks XII.',
+      tech: ['Next.js', 'React', 'Tailwind CSS', 'Supabase', 'Vapi', 'Edge Functions'],
+      demo: 'https://nora-topaz.vercel.app',
+      devpost: 'https://devpost.com/software/nora-3gdjy6?ref_content=my-projects-tab&ref_feature=my_projects',
+      image: '/portfolio-demo.mp4',
+    },
+    {
       title: 'Scholar Seats',
       description: 'A student-focused ticket exchange platform',
-      longDescription: `A student-focused ticket exchange platform to facilitate communication between buyers and sellers of tickets for events at my university. Released and used by ${userCount}+ users at my university.`,
+      longDescription: 'A student-focused ticket exchange platform to facilitate communication between buyers and sellers of tickets for events at my university. Released and used by 120+ users at my university.',
       tech: ['Next.js', 'TypeScript', 'Pocketbase', 'SQLite', 'Linux', 'Nginx', 'Vercel'],
       demo: 'https://scholarseats.com',
       github: 'https://github.com/rakejogers/student-ticket-app',
       image: '/scholar-seats-demo.mp4',
+      poster: '/scholarseats.png',
     },
 
     {
@@ -144,11 +129,19 @@ const Projects = () => {
                       </a>
                     </Button>
                   )}
+                  {project.devpost && (
+                    <Button variant="outline" size="default" className="w-full md:w-auto" asChild>
+                      <a href={project.devpost} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Devpost
+                      </a>
+                    </Button>
+                  )}
                   {project.demo && (
                     <Button size="default" className="w-full md:w-auto" asChild>
                       <a href={project.demo} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-4 h-4 mr-2" /> 
-                        {project.title === 'Scholar Seats' ? 'Visit' : 'Live Demo'}
+                        {project.title === 'Scholar Seats' || project.title.startsWith('Nora') ? 'Visit' : 'Live Demo'}
                       </a>
                     </Button>
                   )}
@@ -162,7 +155,7 @@ const Projects = () => {
                 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <ProjectMedia project={project} isSafari={isSafari} />
+                <ProjectMedia project={project} />
               </motion.div>
             </div>
           </div>
@@ -173,4 +166,3 @@ const Projects = () => {
 }
 
 export default Projects
-

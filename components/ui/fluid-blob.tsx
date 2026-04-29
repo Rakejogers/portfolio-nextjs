@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -107,7 +107,7 @@ void main() {
 `;
 
 function LavaLampShader() {
-  const meshRef = useRef();
+  const meshRef = useRef<THREE.Mesh>(null);
   const { size } = useThree();
   
   const uniforms = useMemo(() => ({
@@ -115,8 +115,7 @@ function LavaLampShader() {
     resolution: { value: new THREE.Vector4() }
   }), []);
 
-  // Update resolution when size changes
-  React.useEffect(() => {
+  useEffect(() => {
     const { width, height } = size;
     const imageAspect = 1;
     let a1, a2;
@@ -151,23 +150,57 @@ function LavaLampShader() {
 }
 
 export const LavaLamp = () => {
+  const [useStaticBackground, setUseStaticBackground] = useState(true);
+
+  useEffect(() => {
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+    const smallScreenQuery = window.matchMedia('(max-width: 768px)');
+
+    const updateBackgroundMode = () => {
+      setUseStaticBackground(
+        reducedMotionQuery.matches ||
+        coarsePointerQuery.matches ||
+        smallScreenQuery.matches
+      );
+    };
+
+    updateBackgroundMode();
+
+    reducedMotionQuery.addEventListener('change', updateBackgroundMode);
+    coarsePointerQuery.addEventListener('change', updateBackgroundMode);
+    smallScreenQuery.addEventListener('change', updateBackgroundMode);
+
+    return () => {
+      reducedMotionQuery.removeEventListener('change', updateBackgroundMode);
+      coarsePointerQuery.removeEventListener('change', updateBackgroundMode);
+      smallScreenQuery.removeEventListener('change', updateBackgroundMode);
+    };
+  }, []);
+
   return (
     <div style={{ width: '100%', height: '150%', top: '-25%', background: 'linear-gradient(to bottom, #000 0%, #000 50%, white 100%)', position: "absolute", left: 0, pointerEvents: 'none' }}>
-      <Canvas
-        camera={{
-          left: -0.5,
-          right: 0.5,
-          top: 0.5,
-          bottom: -0.5,
-          near: -1000,
-          far: 1000,
-          position: [0, 0, 2]
-        }}
-        orthographic
-        gl={{ antialias: true }}
-      >
-        <LavaLampShader />
-      </Canvas>
+      {!useStaticBackground && (
+        <Canvas
+          camera={{
+            left: -0.5,
+            right: 0.5,
+            top: 0.5,
+            bottom: -0.5,
+            near: -1000,
+            far: 1000,
+            position: [0, 0, 2]
+          }}
+          dpr={[1, 1.5]}
+          orthographic
+          gl={{
+            antialias: false,
+            powerPreference: 'high-performance'
+          }}
+        >
+          <LavaLampShader />
+        </Canvas>
+      )}
     </div>
   );
 }
