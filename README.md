@@ -1,4 +1,5 @@
-# My personal portfolio
-###### Built by me with Next.js, Typescript, and React
+# Jake Rogers Portfolio
 
-![screencapture-jakerogers-me-2024-12-05-23_38_15](https://github.com/user-attachments/assets/28b35d84-da4d-47bc-808c-ead4f5c4a779)
+A clean Next.js starter for rebuilding the portfolio UI.
+
+Personal content, project links, and project media references live in `lib/portfolio-data.ts` so the next interface can use one shared source of truth.

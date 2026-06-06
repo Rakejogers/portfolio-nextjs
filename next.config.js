@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  eslint: {
-    ignoreDuringBuilds: true,
+  output: "export",
+  allowedDevOrigins: ["192.168.1.117"],
+  turbopack: {
+    root: __dirname,
   },
-  images: { unoptimized: true },
 };
 
 module.exports = nextConfig;
