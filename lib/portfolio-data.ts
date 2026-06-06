@@ -2,6 +2,11 @@ export type PortfolioAsset = {
   type: "image" | "video" | "document";
   src: string;
   alt?: string;
+  captions?: {
+    label: string;
+    src: string;
+    srcLang: string;
+  };
   poster?: string;
 };
 
@@ -245,6 +250,11 @@ export const portfolioData = {
           type: "video",
           src: "/scholar-seats-demo.mp4",
           poster: "/scholarseats.png",
+          captions: {
+            label: "English",
+            src: "/scholar-seats-demo.vtt",
+            srcLang: "en",
+          },
           alt: "Scholar Seats demo video",
         },
         {
@@ -294,7 +304,7 @@ export const portfolioData = {
       media: [
         {
           type: "video",
-          src: "/portfolio-demo.mp4",
+          src: "/portfolio-demo.mov",
           alt: "Previous portfolio demo video",
         },
       ],

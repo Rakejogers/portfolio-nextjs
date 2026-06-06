@@ -320,27 +320,54 @@ a {
 }
 
 .project-table {
+  width: 100%;
   min-width: 800px;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .project-row {
-  display: grid;
-  grid-template-columns: minmax(190px, 1.05fr) minmax(300px, 1.6fr) minmax(110px, 0.6fr) minmax(120px, 0.6fr);
-  align-items: center;
   border-bottom: 1px dashed rgba(141, 137, 128, 0.6);
 }
 
-.project-row:last-child {
+.project-table tbody .project-row:last-child {
   border-bottom: 0;
 }
 
-.project-row span {
-  min-height: 36px;
-  padding: 7px 24px;
-  border-right: 1px solid var(--color-border);
+.project-row th:nth-child(1),
+.project-row td:nth-child(1) {
+  width: 22%;
 }
 
-.project-row span:last-child {
+.project-row th:nth-child(2),
+.project-row td:nth-child(2) {
+  width: 42%;
+}
+
+.project-row th:nth-child(3),
+.project-row td:nth-child(3) {
+  width: 12%;
+}
+
+.project-row th:nth-child(4),
+.project-row td:nth-child(4) {
+  width: 14%;
+}
+
+.project-row th,
+.project-row td {
+  height: 36px;
+  padding: 7px 24px;
+  border-right: 1px solid var(--color-border);
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.project-row th:last-child,
+.project-row td:last-child {
   border-right: 0;
 }
 
@@ -349,7 +376,16 @@ a {
 }
 
 .selectable-row {
+  appearance: none;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: left;
 }
 
 .selectable-row:focus-visible {
@@ -363,12 +399,39 @@ a {
 }
 
 .selected-row {
+  background: var(--color-surface);
+}
+
+.project-table .selected-row td:first-child,
+.timeline-item.selected-row {
   box-shadow: inset 3px 0 0 var(--color-primary);
 }
 
 .project-header {
   color: var(--color-primary);
   font-weight: 700;
+}
+
+.project-select-button {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-select-button:hover,
+.project-select-button:focus-visible {
+  color: #ff8659;
+  outline: 0;
 }
 
 .timeline-box {
